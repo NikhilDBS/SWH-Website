@@ -112,11 +112,11 @@ a { text-decoration: none; color: inherit; }
 .btn-large { padding: 1rem 2.2rem; font-size: 0.95rem; }
 
 /* ===================== LAYOUT SPACING ===================== */
-.legacy, .craft, .catalogue, .generations, .contact {
+.legacy, .craft, .arrivals, .generations, .contact {
   padding: 5rem 1.5rem;
 }
 @media (min-width: 768px) {
-  .legacy, .craft, .catalogue, .generations, .contact {
+  .legacy, .craft, .arrivals, .generations, .contact {
     padding: 7rem 2.5rem;
   }
 }
@@ -447,74 +447,74 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ===================== CATALOGUE ===================== */
-.catalogue { background: var(--cream2); }
-.catalogue-inner { max-width: 1300px; margin: 0 auto; }
-.catalogue-header { margin-bottom: 3rem; max-width: 60ch; }
+.arrivals { background: var(--cream2); }
+.arrivals-inner { max-width: 1300px; margin: 0 auto; }
+.arrivals-header { margin-bottom: 3rem; max-width: 60ch; }
 @media (min-width: 768px) {
-  .catalogue-header { margin-bottom: 4rem; }
+  .arrivals-header { margin-bottom: 4rem; }
 }
 
-.catalogue-grid {
+.arrivals-grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   gap: 1.5rem;
 }
 @media (min-width: 768px) {
-  .catalogue-grid { grid-template-columns: 1fr 1fr; }
+  .arrivals-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (min-width: 1024px) {
-  .catalogue-grid { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; }
-  .cat-card:nth-child(3) { grid-row: 1 / 3; grid-column: 3; }
+  .arrivals-grid { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; }
+  .arrival-card:nth-child(3) { grid-row: 1 / 3; grid-column: 3; }
 }
-.cat-card {
+.arrival-card {
   background: var(--white);
   border-radius: 2px; overflow: hidden;
   box-shadow: 0 4px 24px rgba(26,23,20,0.07);
   transition: transform 0.4s var(--ease), box-shadow 0.4s;
 }
-.cat-card:hover {
+.arrival-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(26,23,20,0.13);
 }
-.cat-card-img {
+.arrival-card-img {
   height: 220px; position: relative;
   background-size: cover; background-position: center;
   overflow: hidden;
 }
 @media (min-width: 1024px) {
-  .cat-card-img--tall { height: 100%; min-height: 340px; }
+  .arrival-card-img--tall { height: 100%; min-height: 340px; }
 }
-.cat-card-overlay {
+.arrival-card-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(26,23,20,0.4), transparent 60%);
 }
-.cat-card-tag {
+.arrival-card-tag {
   position: absolute; top: 1rem; left: 1rem;
   background: var(--gold); color: var(--white);
   font-size: 0.62rem; font-weight: 600;
   letter-spacing: 0.14em; text-transform: uppercase;
   padding: 0.3rem 0.7rem; border-radius: 1px;
 }
-.cat-card-body { padding: 1.5rem; }
-.cat-card-body h3 {
+.arrival-card-body { padding: 1.5rem; }
+.arrival-card-body h3 {
   font-family: var(--font-serif);
   font-size: 1.25rem; font-weight: 400;
   color: var(--black); margin-bottom: 0.6rem;
 }
-.cat-card-body p {
+.arrival-card-body p {
   font-size: 0.88rem; line-height: 1.75;
   color: var(--warm);
 }
 
-.catalogue-cta {
+.arrivals-cta {
   margin-top: 3rem;
   display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem;
 }
 @media (min-width: 768px) {
-  .catalogue-cta { margin-top: 4rem; flex-direction: row; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .arrivals-cta { margin-top: 4rem; flex-direction: row; align-items: center; gap: 2rem; flex-wrap: wrap; }
 }
-.catalogue-cta p {
+.arrivals-cta p {
   font-size: 1rem; color: var(--warm); line-height: 1.7; max-width: 45ch;
 }
 
@@ -669,3 +669,39 @@ a { text-decoration: none; color: inherit; }
 .footer-copy {
   font-size: 0.72rem; color: rgba(245,240,232,0.25); letter-spacing: 0.03em;
 }
+
+
+/* ===================== CRAFT SLIDESHOW ===================== */
+.craft-slideshow {
+  display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 1rem; margin-top: 2rem;
+  scrollbar-width: none;
+}
+.craft-slideshow::-webkit-scrollbar { display: none; }
+.craft-slide {
+  flex: 0 0 85%; scroll-snap-align: center;
+  aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;
+}
+@media (min-width: 768px) {
+  .craft-slide { flex: 0 0 85%; }
+}
+@media (min-width: 1024px) {
+  .craft-slide { flex: 0 0 85%; }
+}
+
+/* ===================== REVIEWS ===================== */
+.reviews { background: var(--white); padding: 5rem 1.5rem; }
+@media (min-width: 768px) { .reviews { padding: 7rem 2.5rem; } }
+.reviews-inner { max-width: 1300px; margin: 0 auto; }
+.reviews-header { margin-bottom: 3rem; text-align: center; }
+.reviews-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+@media (min-width: 768px) { .reviews-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.review-card {
+  padding: 2.5rem 2rem;
+  background: var(--cream2);
+  border-radius: 2px;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+.review-stars { color: var(--gold); font-size: 1.2rem; letter-spacing: 0.1em; }
+.review-text { font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; line-height: 1.6; color: var(--black); flex-grow: 1; }
+.review-author { font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--warm); font-weight: 500; }
