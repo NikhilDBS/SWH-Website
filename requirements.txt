@@ -1,0 +1,5 @@
+# This is a pure static HTML/CSS/JS website.
+# There are no external NPM or Python dependencies required to build or run this project.
+
+# To serve the site locally, you can use Python's built-in HTTP server:
+# python -m http.server 8000
