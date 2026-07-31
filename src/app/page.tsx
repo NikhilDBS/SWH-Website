@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import Home from "@/components/Home";
 import CollectionPage from "@/components/CollectionPage";
 import ProductPage, { ProductNotFound } from "@/components/ProductPage";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 const VALID_CATEGORIES: CategoryKey[] = ["suits", "shirts", "trousers", "ethnic", "ready-made"];
 
@@ -83,6 +84,7 @@ export default function HomeRoute() {
 
   return (
     <div className="app-shell">
+      <ScrollProgress />
       <Header path={route.path} />
       <main className="app-main">{renderRoute(route.path, route.segments)}</main>
       <Footer />

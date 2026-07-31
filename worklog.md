@@ -28,3 +28,22 @@ Stage Summary:
 - Single data file to edit: `src/lib/content.ts`.
 - Routes work as deep-linkable hash URLs within the single Next.js `/` route (stack constraint).
 - All contact/WhatsApp/social/map data are clearly-marked placeholders.
+
+---
+
+Task ID: 2
+Agent: Antigravity AI
+Task: Install taste-skill-v2, replace logo, integrate React Bits StaggeredMenu, add scroll progress bar, update brand typography, and add SERVER.md documentation.
+
+Work Log:
+- Installed `taste-skill-v2` (`design-taste-frontend`) into `.agents/skills/design-taste-frontend` via `npx skills add`.
+- Replaced wordmark with official logo `logos/main - ai.png`: copied to `public/images/logo-main.png`, updated `content.ts`, Header (with dark/light brightness invert filter), Footer, and favicon in `layout.tsx`.
+- Integrated React Bits `StaggeredMenu` component and CSS (`src/components/StaggeredMenu.tsx` & `.css`), featuring GSAP staggered underlays in SWH brand palette (tobacco/espresso), brass accent (`#B99B78`), cycling Menu/Close text, plus-to-close icon rotation, counter numbering, and social links.
+- Created `ScrollProgress` UI component (`src/components/ui/scroll-progress.tsx`) using `framer-motion` `useScroll` for a fixed 2px brass-to-espresso gradient progress bar, rendered globally in `src/app/page.tsx`.
+- Refreshed brand typography according to taste skill recommendations: replaced Cormorant Garamond and DM Sans with `Playfair_Display` and `Outfit` fonts in `layout.tsx` and `globals.css`.
+- Authored `SERVER.md` documenting dev server, production build, local network access on phone (`0.0.0.0`), IP resolution, and localtunnel/ngrok options.
+- Verified Next.js production build (`next build`) with 0 errors/warnings and clean type checking.
+
+Stage Summary:
+- All 6 requested enhancements completed, integrated, and verified against production build.
+

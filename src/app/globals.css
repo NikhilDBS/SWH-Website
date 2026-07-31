@@ -20,8 +20,8 @@
   --frost: rgba(243, 240, 233, 0.88); /* frosted header */
 
   /* Type */
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", "Bodoni Moda", Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-dm-sans), "DM Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), "Playfair Display", "Bodoni Moda", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-outfit), "Outfit", "Inter", system-ui, -apple-system, sans-serif;
 
   /* Geometry */
   --header-h: 64px;

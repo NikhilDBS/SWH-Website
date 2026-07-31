@@ -31,8 +31,8 @@ export interface Product {
 export const brand = {
   name: "Standard Wear House",
   shortName: "Standard",
-  wordmarkInkUrl: "/wordmark-ink.svg", // ink wordmark for frosted header
-  wordmarkBoneUrl: "/wordmark-bone.svg", // bone wordmark over dark / hero
+  wordmarkInkUrl: "/images/logo-main.png", // logo for frosted header
+  wordmarkBoneUrl: "/images/logo-main.png", // logo over dark / hero
   establishedLabel: "EST. IN BENGALURU",
   tagline: "Bespoke tailoring, made patiently in Bengaluru.",
 };

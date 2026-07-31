@@ -1,5 +1,4 @@
 "use client";
-import Wordmark from "./Wordmark";
 import { social, brand } from "@/lib/content";
 import { navigate } from "@/lib/router";
 
@@ -8,11 +7,24 @@ export default function Footer() {
     <footer className="site-footer app-footer" aria-label="Site footer">
       <div className="site-footer__inner">
         <div className="site-footer__top">
-          <Wordmark
-            tone="ink"
+          <a
             href="#/"
-            onClick={(e) => { e.preventDefault(); navigate("/"); }}
-          />
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            aria-label="Standard Wear House — home"
+          >
+            <img
+              src="/images/logo-main.png"
+              alt="Standard Wear House"
+              style={{
+                height: "36px",
+                width: "auto",
+                objectFit: "contain",
+              }}
+            />
+          </a>
           <div className="site-footer__socials">
             <a className="site-footer__social" href={social.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">

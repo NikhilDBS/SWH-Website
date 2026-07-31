@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Standard Wear House — Bespoke Tailoring, Bengaluru",
   description:
     "Standard Wear House is a contemporary Bengaluru tailoring house. Bespoke suits, shirts, trousers and ethnic tailoring, made patiently in Bengaluru.",
-  icons: { icon: "/wordmark-ink.svg" },
+  icons: { icon: "/images/logo-main.png" },
 };
 
 export const viewport: Viewport = {
@@ -35,7 +35,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${cormorant.variable} ${dmSans.variable}`}>
+      <body className={`${playfair.variable} ${outfit.variable}`}>
         {children}
       </body>
     </html>

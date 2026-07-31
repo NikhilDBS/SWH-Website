@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./Wordmark.css";
 import "./Header.css";
-import Wordmark from "./Wordmark";
-import StaggeredMenu, { type MenuItem, type MenuSocial } from "./StaggeredMenu";
+import StaggeredMenu, {
+  type StaggeredMenuItem,
+  type StaggeredMenuSocialItem,
+} from "./StaggeredMenu";
 import { navItems, social, brand } from "@/lib/content";
 import { navigate } from "@/lib/router";
 
@@ -51,13 +53,11 @@ export default function Header({ path }: HeaderProps) {
     };
   }, [isHome]);
 
-  // The menu closes itself on item navigation; the wordmark click also closes
-  // it (see goHome). No route-change effect needed.
-
-  const wordmarkBone = menuOpen || (isHome && overHero);
   const frosted = !isHome || !overHero;
   const barState = menuOpen ? "transparent" : frosted ? "frosted" : "transparent";
-  const closedTheme = isHome && overHero ? "light" : "dark";
+
+  // Derive toggle button colour from header context
+  const closedButtonColor = isHome && overHero ? "#F3F0E9" : "#171512"; // bone over hero, ink otherwise
 
   const goHome = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,11 +65,17 @@ export default function Header({ path }: HeaderProps) {
     navigate("/");
   };
 
-  const menuItems: MenuItem[] = navItems.map((n) => ({ label: n.label, route: n.route }));
-  const menuSocials: MenuSocial[] = [
-    { label: "Instagram", url: social.instagram, icon: "instagram" },
-    { label: "Facebook", url: social.facebook, icon: "facebook" },
-    { label: "X", url: social.x, icon: "x" },
+  // Map navItems to StaggeredMenu format
+  const menuItems: StaggeredMenuItem[] = navItems.map((n) => ({
+    label: n.label,
+    ariaLabel: `Go to ${n.label}`,
+    link: n.route,
+  }));
+
+  const menuSocials: StaggeredMenuSocialItem[] = [
+    { label: "Instagram", link: social.instagram },
+    { label: "Facebook", link: social.facebook },
+    { label: "X", link: social.x },
   ];
 
   return (
@@ -81,26 +87,40 @@ export default function Header({ path }: HeaderProps) {
         style={{ zIndex: menuOpen ? 100 : 50 }}
       >
         <div className="site-header__inner">
-          <Wordmark
-            tone={wordmarkBone ? "bone" : "ink"}
-            href="#/"
-            onClick={goHome}
-          />
+          <a href="#/" className="site-header__logo" onClick={goHome} aria-label="Standard Wear House — home">
+            <img
+              src="/images/logo-main.png"
+              alt="Standard Wear House"
+              className="site-header__logo-img"
+              width={140}
+              height={36}
+              style={{
+                height: "32px",
+                width: "auto",
+                objectFit: "contain",
+                transition: "filter 0.5s ease",
+                filter: (menuOpen || (isHome && overHero)) ? "brightness(0) invert(1)" : "none",
+              }}
+            />
+          </a>
         </div>
       </header>
 
       <StaggeredMenu
-        open={menuOpen}
-        onOpenChange={setMenuOpen}
-        items={menuItems}
-        socials={menuSocials}
-        logoUrl={brand.wordmarkBoneUrl}
-        isFixed
         position="right"
+        items={menuItems}
+        socialItems={menuSocials}
         displaySocials
         displayItemNumbering
+        logoUrl="/images/logo-main.png"
+        menuButtonColor={closedButtonColor}
+        openMenuButtonColor="#F3F0E9"
         changeMenuColorOnOpen
-        closedTheme={closedTheme}
+        colors={["#80654F", "#2A241E"]}
+        accentColor="#B99B78"
+        isFixed
+        onMenuOpen={() => setMenuOpen(true)}
+        onMenuClose={() => setMenuOpen(false)}
         onNavigate={(route) => navigate(route)}
       />
     </>
