@@ -47,3 +47,20 @@ Work Log:
 Stage Summary:
 - All 6 requested enhancements completed, integrated, and verified against production build.
 
+---
+
+Task ID: 3
+Agent: Antigravity AI
+Task: Fix header logo duplication, restore StaggeredMenu functionality, address mobile device 404 navigation errors, and resolve mobile layout scroll issues.
+
+Work Log Done:
+- Fixed double logo bug: added `hideHeader` prop to `StaggeredMenu` to disable its inner `<header>` and duplicate logo image while keeping the site `<header>` logo intact.
+- Fixed non-responsive StaggeredMenu toggle: moved the Menu/Close toggle button directly into the main site `Header` (z-index 50) and wired `onToggleRef` callback ref to trigger `StaggeredMenu` state change programmatically, resolving z-index stacking issues.
+- Added animated rotation and color state synchronization for the header toggle icon and label text.
+
+Work Log Pending / In Progress:
+- Fix 404 error when navigating from mobile devices by ensuring menu item links correctly resolve with hash-based route format (`#/...`).
+- Fix Next.js `allowedDevOrigins` warning in `next.config.ts` for cross-origin HMR / dev resource requests from local network IPs (e.g. `192.168.1.9`).
+- Adjust mobile layout scroll-snap configuration (`.home-snap`) so all homepage cards (New Arrivals, Categories, Visit House) can be scrolled smoothly on mobile screens without getting stuck in the hero snap section.
+
+

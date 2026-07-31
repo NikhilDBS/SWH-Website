@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./Wordmark.css";
 import "./Header.css";
 import StaggeredMenu, {
@@ -16,6 +16,7 @@ interface HeaderProps {
 export default function Header({ path }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
+  const toggleMenuRef = useRef<(() => void) | null>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
 
   const isHome = path === "/";
@@ -78,6 +79,10 @@ export default function Header({ path }: HeaderProps) {
     { label: "X", link: social.x },
   ];
 
+  const handleToggleClick = useCallback(() => {
+    toggleMenuRef.current?.();
+  }, []);
+
   return (
     <>
       <header
@@ -103,6 +108,22 @@ export default function Header({ path }: HeaderProps) {
               }}
             />
           </a>
+
+          <button
+            className="site-header__menu-btn"
+            onClick={handleToggleClick}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            style={{
+              color: menuOpen ? "#F3F0E9" : closedButtonColor,
+              transition: "color 0.3s ease",
+            }}
+          >
+            <span className="site-header__menu-text">{menuOpen ? "Close" : "Menu"}</span>
+            <span className={"site-header__menu-icon" + (menuOpen ? " site-header__menu-icon--open" : "")}>
+              <span className="site-header__menu-icon-line" />
+              <span className="site-header__menu-icon-line site-header__menu-icon-line--v" />
+            </span>
+          </button>
         </div>
       </header>
 
@@ -119,6 +140,8 @@ export default function Header({ path }: HeaderProps) {
         colors={["#80654F", "#2A241E"]}
         accentColor="#B99B78"
         isFixed
+        hideHeader
+        onToggleRef={toggleMenuRef}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
         onNavigate={(route) => navigate(route)}

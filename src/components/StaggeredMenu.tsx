@@ -35,6 +35,8 @@ interface StaggeredMenuProps {
   changeMenuColorOnOpen?: boolean;
   isFixed?: boolean;
   closeOnClickAway?: boolean;
+  hideHeader?: boolean;
+  onToggleRef?: React.MutableRefObject<(() => void) | null>;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
   onNavigate?: (link: string) => void;
@@ -55,6 +57,8 @@ export const StaggeredMenu = ({
   changeMenuColorOnOpen = true,
   isFixed = true,
   closeOnClickAway = true,
+  hideHeader = false,
+  onToggleRef,
   onMenuOpen,
   onMenuClose,
   onNavigate,
@@ -84,11 +88,6 @@ export const StaggeredMenu = ({
     const ctx = gsap.context(() => {
       const panel = panelRef.current;
       const preContainer = preLayersRef.current;
-      const plusH = plusHRef.current;
-      const plusV = plusVRef.current;
-      const icon = iconRef.current;
-      const textInner = textInnerRef.current;
-      if (!panel || !plusH || !plusV || !icon || !textInner) return;
 
       let preLayers: HTMLDivElement[] = [];
       if (preContainer) {
@@ -99,14 +98,20 @@ export const StaggeredMenu = ({
       preLayerElsRef.current = preLayers;
 
       const offscreen = position === "left" ? -100 : 100;
-      gsap.set([panel, ...preLayers], { xPercent: offscreen, opacity: 1 });
+      gsap.set([panel, ...preLayers].filter(Boolean), { xPercent: offscreen, opacity: 1 });
       if (preContainer) {
         gsap.set(preContainer, { xPercent: 0, opacity: 1 });
       }
-      gsap.set(plusH, { transformOrigin: "50% 50%", rotate: 0 });
-      gsap.set(plusV, { transformOrigin: "50% 50%", rotate: 90 });
-      gsap.set(icon, { rotate: 0, transformOrigin: "50% 50%" });
-      gsap.set(textInner, { yPercent: 0 });
+
+      // Only set up icon/text refs if header is visible
+      const plusH = plusHRef.current;
+      const plusV = plusVRef.current;
+      const icon = iconRef.current;
+      const textInner = textInnerRef.current;
+      if (plusH) gsap.set(plusH, { transformOrigin: "50% 50%", rotate: 0 });
+      if (plusV) gsap.set(plusV, { transformOrigin: "50% 50%", rotate: 90 });
+      if (icon) gsap.set(icon, { rotate: 0, transformOrigin: "50% 50%" });
+      if (textInner) gsap.set(textInner, { yPercent: 0 });
       if (toggleBtnRef.current)
         gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
@@ -393,9 +398,11 @@ export const StaggeredMenu = ({
       onMenuClose?.();
       playClose();
     }
-    animateIcon(target);
-    animateColor(target);
-    animateText(target);
+    if (!hideHeader) {
+      animateIcon(target);
+      animateColor(target);
+      animateText(target);
+    }
   }, [
     playOpen,
     playClose,
@@ -404,6 +411,7 @@ export const StaggeredMenu = ({
     animateText,
     onMenuOpen,
     onMenuClose,
+    hideHeader,
   ]);
 
   const closeMenu = useCallback(() => {
@@ -413,11 +421,13 @@ export const StaggeredMenu = ({
       document.body.style.overflow = "";
       onMenuClose?.();
       playClose();
-      animateIcon(false);
-      animateColor(false);
-      animateText(false);
+      if (!hideHeader) {
+        animateIcon(false);
+        animateColor(false);
+        animateText(false);
+      }
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [playClose, animateIcon, animateColor, animateText, onMenuClose, hideHeader]);
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -451,6 +461,18 @@ export const StaggeredMenu = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, closeMenu]);
+
+  // Expose toggleMenu to parent via ref
+  React.useEffect(() => {
+    if (onToggleRef) {
+      onToggleRef.current = toggleMenu;
+    }
+    return () => {
+      if (onToggleRef) {
+        onToggleRef.current = null;
+      }
+    };
+  }, [toggleMenu, onToggleRef]);
 
   const handleItemClick = useCallback(
     (e: React.MouseEvent, link: string) => {
@@ -487,48 +509,50 @@ export const StaggeredMenu = ({
         })()}
       </div>
 
-      <header
-        className="staggered-menu-header"
-        aria-label="Main navigation header"
-      >
-        <div className="sm-logo" aria-label="Logo">
-          <img
-            src={logoUrl || "/images/logo-main.png"}
-            alt="Standard Wear House"
-            className="sm-logo-img"
-            draggable={false}
-            width={110}
-            height={24}
-          />
-        </div>
-        <button
-          ref={toggleBtnRef}
-          className="sm-toggle"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="staggered-menu-panel"
-          onClick={toggleMenu}
-          type="button"
+      {!hideHeader && (
+        <header
+          className="staggered-menu-header"
+          aria-label="Main navigation header"
         >
-          <span
-            ref={textWrapRef}
-            className="sm-toggle-textWrap"
-            aria-hidden="true"
+          <div className="sm-logo" aria-label="Logo">
+            <img
+              src={logoUrl || "/images/logo-main.png"}
+              alt="Standard Wear House"
+              className="sm-logo-img"
+              draggable={false}
+              width={110}
+              height={24}
+            />
+          </div>
+          <button
+            ref={toggleBtnRef}
+            className="sm-toggle"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="staggered-menu-panel"
+            onClick={toggleMenu}
+            type="button"
           >
-            <span ref={textInnerRef} className="sm-toggle-textInner">
-              {textLines.map((l, i) => (
-                <span className="sm-toggle-line" key={i}>
-                  {l}
-                </span>
-              ))}
+            <span
+              ref={textWrapRef}
+              className="sm-toggle-textWrap"
+              aria-hidden="true"
+            >
+              <span ref={textInnerRef} className="sm-toggle-textInner">
+                {textLines.map((l, i) => (
+                  <span className="sm-toggle-line" key={i}>
+                    {l}
+                  </span>
+                ))}
+              </span>
             </span>
-          </span>
-          <span ref={iconRef} className="sm-icon" aria-hidden="true">
-            <span ref={plusHRef} className="sm-icon-line" />
-            <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
-          </span>
-        </button>
-      </header>
+            <span ref={iconRef} className="sm-icon" aria-hidden="true">
+              <span ref={plusHRef} className="sm-icon-line" />
+              <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
+            </span>
+          </button>
+        </header>
+      )}
 
       <aside
         id="staggered-menu-panel"
