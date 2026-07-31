@@ -1,0 +1,5 @@
+/* Header-specific overrides (bar + wordmark layout). Core wordmark + bar
+ * styles live in Wordmark.css. */
+.site-header__inner {
+  align-items: center;
+}

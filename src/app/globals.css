@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+/* =======================================================================
+ * STANDARD WEAR HOUSE — design system
+ * Warm bone / parchment canvas, ink, espresso, tobacco, stone, brass.
+ * Almost no rounded corners; fine hairline borders; matte editorial feel.
+ * ===================================================================== */
+
+:root {
+  /* Palette */
+  --bone: #F3F0E9;        /* canvas / parchment */
+  --bone-soft: #EDE8DE;   /* slightly deeper parchment */
+  --ink: #171512;         /* near-black ink */
+  --espresso: #2A241E;    /* deep espresso */
+  --tobacco: #80654F;     /* restrained tobacco */
+  --stone: #B7AD9F;       /* muted stone */
+  --brass: #B99B78;       /* brushed brass accent */
+  --hair: rgba(23, 21, 18, 0.14);     /* hairline on bone */
+  --hair-light: rgba(243, 240, 233, 0.18); /* hairline on dark */
+  --frost: rgba(243, 240, 233, 0.88); /* frosted header */
+
+  /* Type */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", "Bodoni Moda", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Geometry */
+  --header-h: 64px;
+  --inset: 22px;          /* mobile inset 20-24px */
+  --radius: 2px;          /* almost no rounded corners */
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Safe-area aware top padding for fixed header */
+:root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+/* ------------------------------------------------------------ Typography - */
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 500; line-height: 1.05; margin: 0; letter-spacing: 0.005em; }
+p { margin: 0; }
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #5E4A38; /* deep tobacco for AA contrast on bone */
+}
+.eyebrow--mute { color: var(--stone); }
+.eyebrow--bone { color: rgba(243, 240, 233, 0.82); }
+
+.serif { font-family: var(--font-serif); }
+.sans { font-family: var(--font-sans); }
+
+/* Hairline label divider */
+.label-rule {
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.label-rule::before {
+  content: ""; width: 26px; height: 1px; background: currentColor; opacity: 0.6;
+}
+
+/* --------------------------------------------------------- Focus / a11y --- */
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+.focus-pill :focus-visible { outline-offset: 2px; border-radius: 2px; }
+
+/* ---------------------------------------------------------- Scrollbars --- */
+/* Thin warm scrollbar for snap rails / inner scrolls */
+.warm-scroll::-webkit-scrollbar { height: 0; width: 0; }
+.warm-scroll { scrollbar-width: none; }
+
+/* ------------------------------------------------------------- Layout ---- */
+.inset { padding-left: var(--inset); padding-right: var(--inset); }
+.app-shell { min-height: 100svh; display: flex; flex-direction: column; }
+
+/* ============================================================ HOME SNAP === */
+/* Nested scroll container for the 4 primary panels. Accordions + footer
+ * follow in normal document flow so they are never hijacked by snap. */
+.home-snap {
+  height: 100svh;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: auto;
+}
+@media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  .home-snap { scroll-snap-type: y mandatory; }
+}
+
+.snap-panel {
+  min-height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Outer-card geometry shared by primary panels */
+.outer-card {
+  flex: 1;
+  margin: 20px var(--inset);
+  border: 1px solid var(--hair);
+  background: var(--bone-soft);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 768px) {
+  .outer-card { margin: 28px auto; max-width: 1180px; }
+}
+
+/* ===================================================== Horizontal rails === */
+.h-rail {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px var(--inset) 18px;
+  scrollbar-width: none;
+}
+.h-rail::-webkit-scrollbar { display: none; }
+.h-rail > * { scroll-snap-align: start; scroll-snap-stop: always; flex: 0 0 auto; }
+
+/* Product preview card (~80vw on phone so next card peeks) */
+.prev-card {
+  width: 80vw;
+  max-width: 340px;
+}
+@media (min-width: 768px) { .prev-card { width: 300px; } }
+
+/* Category card same width logic */
+.cat-card { width: 80vw; max-width: 340px; }
+@media (min-width: 768px) { .cat-card { width: 300px; } }
+
+/* ============================================================= Grain ===== */
+/* Subtle, performant grain via a tiny inline SVG data URI */
+.grain::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Warm matte treatment for editorial imagery */
+.editorial-img {
+  filter: saturate(0.82) contrast(0.97) brightness(0.99) sepia(0.06);
+}
+
+/* ====================================================== Buttons / CTAs === */
+.text-cta {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  min-height: 44px;
+  position: relative;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.text-cta::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 6px;
+  height: 1px; background: var(--ink); transform-origin: left;
+  transform: scaleX(0.4); transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.text-cta:hover::after, .text-cta:focus-visible::after { transform: scaleX(1); }
+.text-cta--bone { color: var(--bone); }
+.text-cta--bone::after { background: var(--bone); }
+
+/* Solid restrained button */
+.btn-solid {
+  font-family: var(--font-sans);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+  background: var(--ink); color: var(--bone);
+  border: 1px solid var(--ink);
+  padding: 15px 22px; min-height: 48px;
+  display: inline-flex; align-items: center; gap: 12px; cursor: pointer;
+  transition: background .35s ease, color .35s ease;
+}
+.btn-solid:hover { background: var(--espresso); }
+.btn-solid--outline { background: transparent; color: var(--ink); }
+.btn-solid--outline:hover { background: var(--ink); color: var(--bone); }
+
+/* =================================================== Reveal on scroll === */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* =================================================== Reduced motion ====== */
+@media (prefers-reduced-motion: reduce) {
+  .home-snap { scroll-snap-type: none; }
+  .snap-panel { scroll-snap-align: none; scroll-snap-stop: normal; }
+  .h-rail { scroll-snap-type: none; }
+  .h-rail > * { scroll-snap-stop: normal; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  .text-cta::after { transition: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+/* =================================================== Page scaffolding === */
+.page { padding-top: calc(var(--header-h) + var(--safe-top) + 18px); min-height: 100svh; }
+.section { padding: 0 var(--inset); }
+.section-tight { padding: 0 var(--inset); }
+
+/* Editorial hairline */
+.hr { border: 0; border-top: 1px solid var(--hair); margin: 0; }
+
+/* Sticky footer behaviour handled by app-shell flex column + mt-auto on footer */
+.app-footer { margin-top: auto; }
