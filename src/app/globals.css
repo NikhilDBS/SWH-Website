@@ -98,20 +98,15 @@ p { margin: 0; }
 /* Nested scroll container for the 4 primary panels. Accordions + footer
  * follow in normal document flow so they are never hijacked by snap. */
 .home-snap {
-  height: 100svh;
   overflow-y: auto;
   scroll-snap-type: y proximity;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: auto;
 }
-@media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
-  .home-snap { scroll-snap-type: y mandatory; }
-}
 
 .snap-panel {
   min-height: 100svh;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
   position: relative;
   display: flex;
   flex-direction: column;

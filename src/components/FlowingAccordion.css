@@ -1,0 +1,136 @@
+/* =======================================================================
+ * FlowingAccordion — SWH brand accordion with FlowingMenu edge-slide animation
+ * ===================================================================== */
+
+.facc {
+  position: relative;
+  border: 1px solid var(--hair, rgba(23,21,18,0.14));
+  background: var(--bone-soft, #EDE8DE);
+  overflow: hidden;
+  /* anchor offset for fixed header */
+  scroll-margin-top: calc(var(--header-h, 64px) + env(safe-area-inset-top, 0px) + 20px);
+}
+
+/* ---- Hover overlay (slides in from top/bottom edge) ---- */
+.facc__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  /* initial position set by GSAP in useLayoutEffect */
+  transform: translate3d(0, 101%, 0);
+  opacity: 0.13;
+}
+
+.facc__overlay-inner {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Summary / trigger ---- */
+.facc__summary {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px var(--inset, 22px);
+  min-height: 56px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(22px, 6vw, 30px);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink, #171512);
+  transition: color 0.3s ease;
+}
+
+.facc__summary:focus-visible {
+  outline: 2px solid var(--brass, #B99B78);
+  outline-offset: -2px;
+}
+
+.facc__title {
+  transition: color 0.3s ease;
+}
+
+/* ---- Plus / minus icon ---- */
+.facc__icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.facc__icon::before,
+.facc__icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: var(--ink, #171512);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.facc__icon::before {
+  width: 16px;
+  height: 1.5px;
+  transform: translate(-50%, -50%);
+}
+
+.facc__icon::after {
+  width: 1.5px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+
+.facc--open .facc__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+/* ---- Body ---- */
+.facc__body {
+  position: relative;
+  z-index: 2;
+  color: var(--espresso, #2A241E);
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 64ch;
+  padding: 0 var(--inset, 22px);
+}
+
+.facc__body > *:last-child {
+  padding-bottom: 26px;
+}
+
+.facc__body p + p {
+  margin-top: 12px;
+}
+
+/* Contact list inside body */
+.facc__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.facc__contact dt {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tobacco, #80654F);
+  margin-top: 10px;
+}
+
+.facc__contact dd {
+  margin: 0;
+  font-size: 15px;
+}

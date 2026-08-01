@@ -567,19 +567,25 @@ export const StaggeredMenu = ({
             data-numbering={displayItemNumbering || undefined}
           >
             {items && items.length ? (
-              items.map((it, idx) => (
-                <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <a
-                    className="sm-panel-item"
-                    href={it.link}
-                    aria-label={it.ariaLabel}
-                    data-index={idx + 1}
-                    onClick={(e) => handleItemClick(e, it.link)}
-                  >
-                    <span className="sm-panel-itemLabel">{it.label}</span>
-                  </a>
-                </li>
-              ))
+              items.map((it, idx) => {
+                // Build a proper hash href so native navigation (no JS) also works
+                const href = it.link.startsWith("/#")
+                  ? `#/?a=${it.link.slice(2)}`
+                  : `#${it.link}`;
+                return (
+                  <li className="sm-panel-itemWrap" key={it.label + idx}>
+                    <a
+                      className="sm-panel-item"
+                      href={href}
+                      aria-label={it.ariaLabel}
+                      data-index={idx + 1}
+                      onClick={(e) => handleItemClick(e, it.link)}
+                    >
+                      <span className="sm-panel-itemLabel">{it.label}</span>
+                    </a>
+                  </li>
+                );
+              })
             ) : (
               <li className="sm-panel-itemWrap" aria-hidden="true">
                 <span className="sm-panel-item">

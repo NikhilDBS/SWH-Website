@@ -62,6 +62,22 @@
 }
 .site-header .wordmark { position: relative; z-index: 108; }
 
-/* When menu open, lift wordmark above the dark panel */
-.site-header[data-menuopen="true"] { z-index: 100; }
+/* When menu open, lift header well above the StaggeredMenu panel */
+.site-header[data-menuopen="true"] { z-index: 9999 !important; }
 .site-header[data-menuopen="true"] .wordmark { color: var(--bone); }
+
+/* Logo inversion: always invert over the dark hero image */
+.site-header__logo-img--over-hero {
+  filter: brightness(0) invert(1);
+}
+
+/* When menu is open on any viewport: darken logo to ink-black for
+   maximum contrast on the bone panel background. */
+.site-header[data-menuopen="true"] .site-header__logo-img {
+  filter: brightness(0);
+}
+
+/* When menu is open: ensure close button is dark ink on bone panel. */
+.site-header[data-menuopen="true"] .site-header__menu-btn {
+  color: var(--ink) !important;
+}

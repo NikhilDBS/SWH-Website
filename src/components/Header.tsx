@@ -89,14 +89,13 @@ export default function Header({ path }: HeaderProps) {
         className="site-header"
         data-state={barState}
         data-menuopen={menuOpen ? "true" : "false"}
-        style={{ zIndex: menuOpen ? 100 : 50 }}
       >
         <div className="site-header__inner">
           <a href="#/" className="site-header__logo" onClick={goHome} aria-label="Standard Wear House — home">
             <img
               src="/images/logo-main.png"
               alt="Standard Wear House"
-              className="site-header__logo-img"
+              className={"site-header__logo-img" + (isHome && overHero ? " site-header__logo-img--over-hero" : "")}
               width={140}
               height={36}
               style={{
@@ -104,7 +103,6 @@ export default function Header({ path }: HeaderProps) {
                 width: "auto",
                 objectFit: "contain",
                 transition: "filter 0.5s ease",
-                filter: (menuOpen || (isHome && overHero)) ? "brightness(0) invert(1)" : "none",
               }}
             />
           </a>
@@ -113,10 +111,6 @@ export default function Header({ path }: HeaderProps) {
             className="site-header__menu-btn"
             onClick={handleToggleClick}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            style={{
-              color: menuOpen ? "#F3F0E9" : closedButtonColor,
-              transition: "color 0.3s ease",
-            }}
           >
             <span className="site-header__menu-text">{menuOpen ? "Close" : "Menu"}</span>
             <span className={"site-header__menu-icon" + (menuOpen ? " site-header__menu-icon--open" : "")}>

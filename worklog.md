@@ -59,8 +59,26 @@ Work Log Done:
 - Added animated rotation and color state synchronization for the header toggle icon and label text.
 
 Work Log Pending / In Progress:
-- Fix 404 error when navigating from mobile devices by ensuring menu item links correctly resolve with hash-based route format (`#/...`).
-- Fix Next.js `allowedDevOrigins` warning in `next.config.ts` for cross-origin HMR / dev resource requests from local network IPs (e.g. `192.168.1.9`).
-- Adjust mobile layout scroll-snap configuration (`.home-snap`) so all homepage cards (New Arrivals, Categories, Visit House) can be scrolled smoothly on mobile screens without getting stuck in the hero snap section.
+- [DONE] Fixed 404 errors on mobile menu navigation: StaggeredMenu `<a>` elements now use hash-prefixed `href` values (e.g. `#/collections/suits`, `#/?a=contact`) instead of bare paths (e.g. `/collections/suits`), so native link fallback when JS doesn't intercept the click goes through the hash router instead of hitting the Next.js server and returning 404.
+- [DONE] Fixed `allowedDevOrigins` warning in `next.config.ts` — already resolved in previous session with `["192.168.1.9", "0.0.0.0", "localhost"]`.
+- [DONE] Fixed mobile scroll-snap getting stuck on the hero panel: removed `height: 100svh` on `.home-snap` (was acting as a scroll container trap), removed the `(pointer: coarse)` media query that forced `scroll-snap-type: y mandatory` on touch devices (now `proximity` everywhere), and removed `scroll-snap-stop: always` from `.snap-panel` so scrolling flows smoothly through all homepage sections.
 
+Verified: Production build (`next build`) passes with 0 errors and 0 warnings.
+
+---
+
+Task ID: 4
+Agent: Antigravity AI
+Task: Fix logo/button visibility when menu is open; replace accordion animation with FlowingMenu edge-slide.
+
+Work Log:
+- Fixed logo visibility on menu open: switched from JS inline `filter` style to CSS-class-driven inversion. Logo inverts over the dark hero (`.site-header__logo-img--over-hero` class), and on mobile ≤1024px when menu is open (full-screen dark panel) via media query. Desktop logo stays ink-colored since the narrow panel doesn't cover the header bar.
+- Fixed close button visibility: removed JS inline color override. Now CSS-driven: ink on frosted (default), bone over hero via `data-state="transparent"` selector, bone on mobile when menu open via `!important` in media query.
+- Built `FlowingAccordion` component (`src/components/FlowingAccordion.tsx` + `FlowingAccordion.css`): replaces native `<details>/<summary>`. On hover, detects nearest edge (top/bottom via squared-distance), GSAP-slides a brass tint overlay in from that edge; on mouse leave slides it back out toward the exit edge. Body open/close uses GSAP height tween (0→auto on open, auto→0 on close). No marquee, no images — pure structural animation.
+- Replaced `LegacyContact.tsx` to use `FlowingAccordion` for both Legacy/History and Contact. One-open-at-a-time logic via React `useState`.
+- Verified: Production build (`next build`) passes with 0 errors, 0 warnings.
+
+Stage Summary:
+- Logo and close button now correctly visible across all states (hero, frosted, mobile menu open, desktop menu open).
+- Accordions have smooth GSAP open/close + FlowingMenu edge-aware hover tint animation.
 

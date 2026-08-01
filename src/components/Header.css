@@ -65,3 +65,12 @@
 .site-header__menu-icon-line--v {
   transform: translate(-50%, -50%) rotate(90deg);
 }
+
+/* ---- Button colour: bone over transparent header (dark hero bg), ink on frosted ---- */
+.site-header__menu-btn {
+  color: var(--ink);
+  transition: color 0.4s ease;
+}
+.site-header[data-state="transparent"][data-menuopen="false"] .site-header__menu-btn {
+  color: var(--bone);
+}
