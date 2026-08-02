@@ -38,28 +38,31 @@ export default function CollectionPage({ title, eyebrow, intro, products }: Coll
 
       <div className="bento">
         {groups.map((group, gi) => {
-          // group has up to 3 products: [a, b, large]
-          const largeSide = gi % 2 === 0 ? "right" : "left"; // alternate
           const a = group[0];
           const b = group[1];
           const large = group[2];
+
           if (!large) {
-            // fewer than 3 in the last group: render as simple small tiles
+            // Fewer than 3 in the last group: show remaining smalls in a row
             return (
               <div className="bento-group bento-group--tail" key={gi}>
-                {group.map((p) => (
-                  <BentoTile key={p.slug} p={p} size="small" />
-                ))}
+                <div className="bento-row--smalls">
+                  {group.map((p) => (
+                    <BentoTile key={p.slug} p={p} size="small" />
+                  ))}
+                </div>
               </div>
             );
           }
+
           return (
-            <div
-              className={`bento-group bento-group--large-${largeSide}`}
-              key={gi}
-            >
-              <BentoTile p={a} size="small" />
-              <BentoTile p={b} size="small" />
+            <div className="bento-group" key={gi}>
+              {/* Row 1: two small tiles side by side */}
+              <div className="bento-row--smalls">
+                <BentoTile p={a} size="small" />
+                <BentoTile p={b} size="small" />
+              </div>
+              {/* Row 2: one large tile full width */}
               <BentoTile p={large} size="large" />
             </div>
           );

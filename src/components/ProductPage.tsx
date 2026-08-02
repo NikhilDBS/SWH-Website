@@ -1,5 +1,4 @@
 "use client";
-import { useRef, useState } from "react";
 import type { Product } from "@/lib/content";
 import { productsByCategory, whatsappUrl, categoryLabels } from "@/lib/content";
 import type { CategoryKey } from "@/lib/content";
@@ -11,24 +10,6 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ product }: ProductPageProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(1);
-  const total = product.images.length;
-
-  const scrollTo = (i: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const w = track.clientWidth;
-    track.scrollTo({ left: w * i, behavior: "smooth" });
-  };
-
-  const onScroll = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const i = Math.round(track.scrollLeft / track.clientWidth) + 1;
-    setIndex(Math.min(Math.max(i, 1), total));
-  };
-
   const waMessage = `Hello Standard Wear House, I'd like a fitting consultation about the ${product.title} (${product.material}).`;
 
   return (
@@ -43,51 +24,18 @@ export default function ProductPage({ product }: ProductPageProps) {
         <span className="product__crumb-current">{product.title}</span>
       </nav>
 
-      {/* Carousel */}
-      <div className="pcarousel-wrap">
-        <div
-          className="pcarousel warm-scroll"
-          ref={trackRef}
-          onScroll={onScroll}
-          role="group"
-          aria-roledescription="carousel"
-          aria-label={`${product.title} images`}
-          tabIndex={0}
-        >
-          {product.images.map((src, i) => (
-            <div className="pcarousel__slide" key={i} aria-roledescription="slide" aria-label={`Image ${i + 1} of ${total}`}>
-              <img
-                className="editorial-img pcarousel__img"
-                src={src}
-                alt={`${product.title} — view ${i + 1}`}
-                loading={i === 0 ? "eager" : "lazy"}
-              />
-            </div>
-          ))}
-        </div>
-
-        <button
-          type="button"
-          className="pcarousel__nav pcarousel__nav--prev"
-          onClick={() => scrollTo(index - 2)}
-          disabled={index <= 1}
-          aria-label="Previous image"
-        >
-          <span aria-hidden="true">←</span>
-        </button>
-        <button
-          type="button"
-          className="pcarousel__nav pcarousel__nav--next"
-          onClick={() => scrollTo(index)}
-          disabled={index >= total}
-          aria-label="Next image"
-        >
-          <span aria-hidden="true">→</span>
-        </button>
-
-        <div className="pcarousel__counter" aria-live="polite">
-          {index} / {total}
-        </div>
+      {/* Vertical image stack */}
+      <div className="pgallery" aria-label={`${product.title} images`}>
+        {product.images.map((src, i) => (
+          <div className="pgallery__img-wrap" key={i}>
+            <img
+              className="pgallery__img"
+              src={src}
+              alt={`${product.title} — view ${i + 1}`}
+              loading={i === 0 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
       </div>
 
       {/* Details */}
@@ -157,7 +105,7 @@ export function ProductNotFound({ slug }: { slug: string }) {
         <span className="eyebrow">Not found</span>
         <h1 className="product__title">This piece is not on the bench.</h1>
         <p className="product__material">
-          We couldn’t find “{slug}”. It may have been moved or retired.
+          We couldn't find "{slug}". It may have been moved or retired.
         </p>
         <div className="product__cta-block">
           <button type="button" className="btn-solid" onClick={() => navigate("/")}>

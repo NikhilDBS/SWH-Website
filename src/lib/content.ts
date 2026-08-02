@@ -41,14 +41,14 @@ export const brand = {
 /* Local editorial placeholders (warm, matte, cinematic). Replace with your
  * own photography. Referenced by products and panels below. */
 export const imagePool = {
-  hero: "/images/hero.jpg",
+  hero: "/images/hero.png",
   clothChalk: "/images/cloth-chalk.jpg",
   fabricRolls: "/images/fabric-rolls.jpg",
   tailoringBench: "/images/tailoring-bench.jpg",
-  suitLapel: "/images/suit-lapel.jpg",
-  shirtDetail: "/images/shirt-detail.jpg",
-  trousersDetail: "/images/trousers-detail.jpg",
-  ethnicTextile: "/images/ethnic-textile.jpg",
+  suitLapel: "/images/suit-lapel.png",
+  shirtDetail: "/images/shirt-detail.png",
+  trousersDetail: "/images/trousers-detail.png",
+  ethnicTextile: "/images/ethnic-textile.png",
   readyMadeLook: "/images/ready-made-look.jpg",
   atelier: "/images/atelier.jpg",
 };
