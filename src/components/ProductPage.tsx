@@ -1,6 +1,8 @@
 "use client";
-import type { Product } from "@/lib/content";
-import { productsByCategory, whatsappUrl, categoryLabels } from "@/lib/content";
+import type { Product } from "@/lib/products";
+import { productsByCategory } from "@/lib/products";
+import { useProducts } from "@/lib/products-context";
+import { whatsappUrl, categoryLabels } from "@/lib/content";
 import type { CategoryKey } from "@/lib/content";
 import { AppLink, navigate } from "@/lib/router";
 import "./Product.css";
@@ -71,7 +73,8 @@ export default function ProductPage({ product }: ProductPageProps) {
 }
 
 function MoreInCategory({ category, currentSlug }: { category: CategoryKey; currentSlug: string }) {
-  const more = productsByCategory(category).filter((p) => p.slug !== currentSlug).slice(0, 4);
+  const allProducts = useProducts();
+  const more = productsByCategory(allProducts, category).filter((p) => p.slug !== currentSlug).slice(0, 4);
   if (more.length === 0) return null;
   return (
     <section className="product__more" aria-label={`More ${categoryLabels[category]}`}>

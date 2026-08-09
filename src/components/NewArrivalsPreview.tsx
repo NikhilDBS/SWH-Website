@@ -1,10 +1,14 @@
 "use client";
-import { newArrivals } from "@/lib/content";
+import type { Product } from "@/lib/products";
 import { AppLink } from "@/lib/router";
 import { useInView } from "@/lib/useInView";
 import "./Home.css";
 
-export default function NewArrivalsPreview() {
+interface NewArrivalsPreviewProps {
+  newArrivals: Product[];
+}
+
+export default function NewArrivalsPreview({ newArrivals }: NewArrivalsPreviewProps) {
   const { ref, inView } = useInView<HTMLDivElement>();
   return (
     <section className="snap-panel" aria-label="New Arrivals preview">
