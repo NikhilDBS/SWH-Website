@@ -1,4 +1,4 @@
-﻿/* =============================================================================
+/* =============================================================================
  * PRISM API CLIENT -- server-only (legacy + Supabase)
  * -----------------------------------------------------------------------------
  * Never import this file from a "use client" component.
@@ -35,8 +35,7 @@ async function getProductsFromSupabase(): Promise<PrismProduct[]> {
 
     const { data, error } = await supabase
       .from("products")
-      .select(
-        
+      .select(`
         id,
         prism_internal_id,
         category_id,
@@ -45,8 +44,7 @@ async function getProductsFromSupabase(): Promise<PrismProduct[]> {
         website_caption,
         published_at,
         product_images ( storage_url, display_order )
-      
-      )
+      `)
       .order("published_at", { ascending: false })
       .limit(200);
 
@@ -84,11 +82,11 @@ async function getProductsFromPrismApi(): Promise<PrismProduct[]> {
 
   if (!base || !key || !brandId) return [];
 
-  const url = ${base}/api/website/products?brand_id=&limit=200;
+  const url = `${base}/api/website/products?brand_id=${brandId}&limit=200`;
 
   try {
     const res = await fetch(url, {
-      headers: { Authorization: Bearer  },
+      headers: { Authorization: `Bearer ${key}` },
       next: { revalidate: 900 }, // 15 min -- only used when Supabase is unavailable
     });
     if (!res.ok) return [];
