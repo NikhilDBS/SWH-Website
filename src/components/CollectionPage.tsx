@@ -1,5 +1,5 @@
 "use client";
-import type { Product } from "@/lib/content";
+import type { Product } from "@/lib/products";
 import { AppLink, navigate } from "@/lib/router";
 import "./Collection.css";
 
